@@ -280,6 +280,7 @@ const CLIENTS = [
     domain: "wearcomet.com",
     industry: "D2C footwear",
     mrr: "₹3.80L / mo",
+    tier: "P1",
     status: { label: "Renewal pending", tone: "warn" }
   }
 
@@ -331,6 +332,7 @@ function renderRoster(filter) {
     <tr class="client-row" data-href="clients/${c.slug}.html">
       <td>
         <span class="client-name">${c.name}</span>
+        ${c.tier ? `<span class="tag accent" style="margin-left:8px;">${c.tier}</span>` : ""}
         <span class="client-domain">${c.domain}</span>
       </td>
       <td>${c.industry}</td>

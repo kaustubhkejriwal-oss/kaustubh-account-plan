@@ -99,15 +99,37 @@
   .print-btn:hover { border-color: var(--accent); color: var(--accent); }
 
   /* ---------- eyebrow ---------- */
+  .eyebrow-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
   .eyebrow {
     font-family: var(--f-mono);
     font-size: 11px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--accent);
-    margin: 0 0 10px;
+    margin: 0;
   }
   .eyebrow.muted { color: var(--muted); }
+
+  .tier-badge {
+    display: none;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-radius: 999px;
+    padding: 5px 12px;
+    white-space: nowrap;
+  }
 
   /* ---------- title block ---------- */
   h1.title {
@@ -450,11 +472,14 @@
   <div class="page-inner">
 
     <div class="topbar">
-      <a class="back-link" href="../index.html">&larr; All clients</a>
+      <a class="back-link" href="dashboard.html">&larr; All clients</a>
       <button class="print-btn" id="printBtn">Export / Print</button>
     </div>
 
-    <p class="eyebrow" id="topEyebrow">devx labs · account planning · internal</p>
+    <div class="eyebrow-row">
+      <p class="eyebrow" id="topEyebrow">devx labs · account planning · internal</p>
+      <span class="tier-badge" id="tierBadge"></span>
+    </div>
     <h1 class="title" id="title"></h1>
     <p class="meta-line" id="metaLine"></p>
 
@@ -481,6 +506,7 @@ const CLIENT = {
   domain: "wearcomet.com",
   legalName: "Grails Marketing Private Limited",
   preparedDate: "September 2026",
+  tier: "P1",
 
   stats: [
     { label: "Current MRR", value: "₹3.80L", tone: "ink" },
@@ -592,12 +618,52 @@ const CLIENT = {
       label: "Whitespace & Opportunities",
       title: "Where the growth is",
       html: `
-        <ul class="plain">
-          <li><strong>Shopify Headless migration</strong> &mdash; the largest near-term opportunity, roughly ₹20L, and winnable if devx gets the pricing right. Currently the deal is stalled on price and design, not on need.</li>
-          <li><strong>Dedicated maintenance developer</strong> &mdash; expected to follow naturally once headless is signed, adding recurring revenue on top of the project fee.</li>
-          <li><strong>Chatbot</strong> &mdash; Comet has appetite for it but won't pay for it as a standalone line item. It needs to be bundled into an AMC or maintenance plan rather than sold on its own.</li>
-          <li><strong>Data Warehousing</strong> &mdash; previously pitched with no traction. Comet doesn't have AWS credits, which makes a full-price DW offer a hard sell. Worth revisiting only with a lighter package, or once their AWS cost situation changes.</li>
-        </ul>
+        <table>
+          <thead>
+            <tr>
+              <th style="width:24%">Opportunity</th>
+              <th style="width:44%">Detail</th>
+              <th style="width:32%">Next-quarter revenue potential</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="strong">Shopify Headless migration</td>
+              <td>The largest near-term opportunity, winnable if devx gets the pricing right. Currently stalled on price and design, not on need.</td>
+              <td>
+                <span class="tag accent">~₹20L, one-time</span><br>
+                <span style="color:var(--muted); font-size:12.5px;">if closed on schedule this quarter</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="strong">Dedicated maintenance developer</td>
+              <td>Expected to follow naturally once headless is signed, adding recurring revenue on top of the project fee.</td>
+              <td>
+                <span class="tag warn">Rate TBD</span><br>
+                <span style="color:var(--muted); font-size:12.5px;">confirm your standard dedicated-resource rate to size this</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="strong">Chatbot</td>
+              <td>Comet has appetite for it but won't pay for it as a standalone line item. Needs to be bundled into an AMC or maintenance plan.</td>
+              <td>
+                <span class="tag">Bundled</span><br>
+                <span style="color:var(--muted); font-size:12.5px;">no separate revenue line unless AMC pricing is raised to reflect it</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="strong">Data Warehousing</td>
+              <td>Previously pitched with no traction. No AWS credits on their side makes a full-price offer a hard sell.</td>
+              <td>
+                <span class="tag">₹0 this quarter</span><br>
+                <span style="color:var(--muted); font-size:12.5px;">revisit only with a lighter package</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="callout">
+          <strong>Quantifiable next-quarter upside:</strong> ~₹20L one-time if Headless closes on schedule. That's the only figure locked in &mdash; share your standard monthly rate for a dedicated maintenance developer and this total can include recurring MRR too, not just the one-time headless fee.
+        </div>
       `
     },
     {
@@ -614,7 +680,7 @@ const CLIENT = {
         },
         {
           title: "Close Shopify Headless, or fall back to an extended Shopify Dev AMC",
-          timing: "ASAP &mdash; pending pricing &amp; design sign-off",
+          timing: "ASAP &mdash; pending pricing & design sign-off",
           notes: "Biggest revenue lever this quarter, ~₹20L."
         },
         {
@@ -662,6 +728,12 @@ function renderHeader() {
   document.getElementById("title").innerHTML = `Account Plan &mdash; <em>${CLIENT.name}</em>`;
   document.getElementById("metaLine").textContent =
     `${CLIENT.domain}  ·  ${CLIENT.legalName}  ·  Prepared ${CLIENT.preparedDate}`;
+
+  const tierEl = document.getElementById("tierBadge");
+  if (CLIENT.tier) {
+    tierEl.textContent = `${CLIENT.tier} · priority account`;
+    tierEl.style.display = "inline-block";
+  }
 }
 
 function renderActionPanel(section) {
