@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Client Account Plans · devx Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:         #0A0A0A;
+    --ink-2:       #1A1A1A;
+    --muted:       #5C6066;
+    --muted-2:     #8A8F96;
+    --rule:        #E5E5E5;
+    --rule-2:      #F0F0F0;
+    --paper:       #FFFFFF;
+    --paper-2:     #FAFAF8;
+    --paper-3:     #F4F4F1;
+
+    --accent:      #1E6FFF;
+    --accent-soft: #E8F0FF;
+    --warn:        #C0392B;
+    --ok:          #0A7C53;
+
+    --f-display:   'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
+    --f-serif:     'Source Serif 4', Georgia, serif;
+    --f-mono:      'JetBrains Mono', 'SFMono-Regular', monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--paper-3);
+  }
+
+  body {
+    font-family: var(--f-display);
+    color: var(--ink-2);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "ss01","cv11","tnum";
+    line-height: 1.5;
+  }
+
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--paper);
+    min-height: 100vh;
+    box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 30px 60px -30px rgba(0,0,0,.18);
+  }
+
+  .page-inner {
+    padding: 40px 56px 96px;
+  }
+
+  @media (max-width: 640px) {
+    .page-inner { padding: 28px 20px 64px; }
+  }
+
+  /* ---------- header ---------- */
+  .eyebrow {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 10px;
+  }
+
+  h1.title {
+    font-family: var(--f-display);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    font-size: 42px;
+    line-height: 1.1;
+    color: var(--ink);
+    margin: 0 0 10px;
+  }
+  h1.title em {
+    font-family: var(--f-serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+
+  .meta-line {
+    font-family: var(--f-mono);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+
+  /* ---------- summary stat row ---------- */
+  .stat-row {
+    display: flex;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--ink);
+    margin: 28px 0 0;
+  }
+  .stat-cell {
+    flex: 1 1 0;
+    min-width: 140px;
+    padding: 16px 18px;
+    border-left: 1px solid var(--rule);
+  }
+  .stat-cell:first-child { border-left: none; padding-left: 0; }
+  .stat-label {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 6px;
+  }
+  .stat-value {
+    font-family: var(--f-display);
+    font-size: 26px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    font-feature-settings: "tnum";
+  }
+  .stat-value.warn { color: var(--warn); }
+
+  @media (max-width: 640px) {
+    .stat-cell { flex: 1 1 50%; margin-bottom: 12px; }
+  }
+
+  /* ---------- search ---------- */
+  .search-wrap {
+    margin: 36px 0 8px;
+  }
+  .search-input {
+    width: 100%;
+    font-family: var(--f-display);
+    font-size: 15px;
+    color: var(--ink);
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--rule);
+    padding: 10px 0;
+    outline: none;
+    transition: border-color 150ms ease;
+  }
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--muted-2); }
+
+  /* ---------- roster table ---------- */
+  table.roster {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+  }
+  table.roster thead th {
+    text-align: left;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 400;
+    padding: 10px 12px 8px 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+  }
+  table.roster tbody td {
+    font-size: 14.5px;
+    color: var(--ink-2);
+    padding: 16px 12px 16px 0;
+    border-bottom: 1px solid var(--rule-2);
+    vertical-align: top;
+  }
+  table.roster tbody tr.client-row { cursor: pointer; transition: background 150ms ease; }
+  table.roster tbody tr.client-row:hover td { background: var(--paper-2); }
+  table.roster tbody tr.client-row:hover .client-name { color: var(--accent); }
+  .client-name {
+    color: var(--ink);
+    font-weight: 600;
+    transition: color 150ms ease;
+  }
+  .client-domain {
+    display: block;
+    font-family: var(--f-mono);
+    font-size: 11px;
+    color: var(--muted-2);
+    margin-top: 2px;
+    font-weight: 400;
+  }
+  .tag {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .tag.accent { color: var(--accent); }
+  .tag.warn { color: var(--warn); }
+  .tag.ok { color: var(--ok); }
+  .tag.muted { color: var(--muted); }
+  .arrow-cell {
+    text-align: right;
+    color: var(--muted-2);
+    font-family: var(--f-mono);
+  }
+
+  .empty-state {
+    display: none;
+    padding: 48px 0;
+    text-align: left;
+    color: var(--muted);
+    font-size: 14px;
+    font-style: italic;
+  }
+  .empty-state.visible { display: block; }
+
+  footer.doc-footer {
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="page-inner">
+
+    <p class="eyebrow">devx labs · account planning · internal</p>
+    <h1 class="title">Client <em>Account</em> Plans</h1>
+    <p class="meta-line" id="metaLine"></p>
+
+    <div class="stat-row" id="summaryRow"></div>
+
+    <div class="search-wrap">
+      <input class="search-input" id="searchInput" type="text" placeholder="Search clients by name or industry" />
+    </div>
+
+    <table class="roster">
+      <thead>
+        <tr>
+          <th style="width:34%">Client</th>
+          <th style="width:22%">Industry</th>
+          <th style="width:18%">MRR</th>
+          <th style="width:20%">Status</th>
+          <th style="width:6%"></th>
+        </tr>
+      </thead>
+      <tbody id="rosterBody"></tbody>
+    </table>
+
+    <p class="empty-state" id="emptyState">No clients match that search.</p>
+
+    <footer class="doc-footer">devx doctrine v1.0 · client roster · confidential</footer>
+  </div>
+</div>
+
+<script>
+/* =========================================================================
+   CLIENT ROSTER
+   Add one entry here for every client, then create clients/<slug>.html
+   for that client's account plan. That's the whole workflow:
+     1. Duplicate clients/comet.html as clients/<slug>.html
+     2. Replace the CLIENT object inside it with the new client's data
+     3. Add a matching row to this CLIENTS array
+   ========================================================================= */
+const CLIENTS = [
+  {
+    slug: "comet",
+    name: "Comet",
+    domain: "wearcomet.com",
+    industry: "D2C footwear",
+    mrr: "₹3.80L / mo",
+    status: { label: "Renewal pending", tone: "warn" }
+  }
+
+  // Next client goes here, e.g.:
+  // {
+  //   slug: "acme",
+  //   name: "Acme Co",
+  //   domain: "acme.com",
+  //   industry: "SaaS",
+  //   mrr: "₹1.2L / mo",
+  //   status: { label: "Healthy", tone: "ok" }
+  // },
+];
+
+/* =========================================================================
+   RENDER LOGIC — generic, doesn't need to change as clients are added
+   ========================================================================= */
+function renderMeta() {
+  const now = new Date();
+  const formatted = now.toLocaleDateString("en-IN", { month: "long", year: "numeric" });
+  document.getElementById("metaLine").textContent = `${CLIENTS.length} client${CLIENTS.length === 1 ? "" : "s"} tracked · Updated ${formatted}`;
+}
+
+function renderSummary() {
+  const pending = CLIENTS.filter(c => c.status.tone === "warn").length;
+  const el = document.getElementById("summaryRow");
+  el.innerHTML = `
+    <div class="stat-cell">
+      <p class="stat-label">Total clients</p>
+      <p class="stat-value">${CLIENTS.length}</p>
+    </div>
+    <div class="stat-cell">
+      <p class="stat-label">Needs attention</p>
+      <p class="stat-value ${pending ? "warn" : ""}">${pending}</p>
+    </div>
+  `;
+}
+
+function renderRoster(filter) {
+  const body = document.getElementById("rosterBody");
+  const q = (filter || "").trim().toLowerCase();
+  const rows = CLIENTS.filter(c =>
+    !q || c.name.toLowerCase().includes(q) || c.industry.toLowerCase().includes(q)
+  );
+
+  document.getElementById("emptyState").classList.toggle("visible", rows.length === 0);
+
+  body.innerHTML = rows.map(c => `
+    <tr class="client-row" data-href="clients/${c.slug}.html">
+      <td>
+        <span class="client-name">${c.name}</span>
+        <span class="client-domain">${c.domain}</span>
+      </td>
+      <td>${c.industry}</td>
+      <td>${c.mrr}</td>
+      <td><span class="tag ${c.status.tone}">${c.status.label}</span></td>
+      <td class="arrow-cell">&rarr;</td>
+    </tr>
+  `).join("");
+
+  body.querySelectorAll(".client-row").forEach(row => {
+    row.addEventListener("click", () => {
+      window.location.href = row.getAttribute("data-href");
+    });
+  });
+}
+
+document.getElementById("searchInput").addEventListener("input", (e) => {
+  renderRoster(e.target.value);
+});
+
+renderMeta();
+renderSummary();
+renderRoster();
+</script>
+
+</body>
+</html>

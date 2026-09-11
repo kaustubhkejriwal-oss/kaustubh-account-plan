@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Account Plan · Comet · devx Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;1,8..60,400;1,8..60,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:         #0A0A0A;
+    --ink-2:       #1A1A1A;
+    --muted:       #5C6066;
+    --muted-2:     #8A8F96;
+    --rule:        #E5E5E5;
+    --rule-2:      #F0F0F0;
+    --paper:       #FFFFFF;
+    --paper-2:     #FAFAF8;
+    --paper-3:     #F4F4F1;
+
+    --accent:      #1E6FFF;
+    --accent-soft: #E8F0FF;
+    --warn:        #C0392B;
+    --ok:          #0A7C53;
+
+    --f-display:   'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
+    --f-serif:     'Source Serif 4', Georgia, serif;
+    --f-mono:      'JetBrains Mono', 'SFMono-Regular', monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--paper-3);
+  }
+
+  body {
+    font-family: var(--f-display);
+    color: var(--ink-2);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "ss01","cv11","tnum";
+    line-height: 1.5;
+  }
+
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--paper);
+    min-height: 100vh;
+    box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 30px 60px -30px rgba(0,0,0,.18);
+  }
+
+  .page-inner {
+    padding: 40px 56px 96px;
+  }
+
+  @media (max-width: 640px) {
+    .page-inner { padding: 28px 20px 64px; }
+  }
+
+  /* ---------- top bar ---------- */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+
+  .back-link {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 150ms ease;
+  }
+  .back-link:hover { color: var(--accent); }
+
+  .print-btn {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: 1px solid var(--rule);
+    padding: 7px 12px;
+    cursor: pointer;
+    transition: border-color 150ms ease, color 150ms ease;
+  }
+  .print-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ---------- eyebrow ---------- */
+  .eyebrow {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 10px;
+  }
+  .eyebrow.muted { color: var(--muted); }
+
+  /* ---------- title block ---------- */
+  h1.title {
+    font-family: var(--f-display);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    font-size: 42px;
+    line-height: 1.1;
+    color: var(--ink);
+    margin: 0 0 10px;
+  }
+  h1.title em {
+    font-family: var(--f-serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+
+  .meta-line {
+    font-family: var(--f-mono);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    padding-bottom: 24px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* ---------- stat row ---------- */
+  .stat-row {
+    display: flex;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--ink);
+    margin-bottom: 8px;
+  }
+  .stat-cell {
+    flex: 1 1 0;
+    min-width: 140px;
+    padding: 16px 18px;
+    border-left: 1px solid var(--rule);
+  }
+  .stat-cell:first-child { border-left: none; padding-left: 0; }
+  .stat-label {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 6px;
+  }
+  .stat-value {
+    font-family: var(--f-display);
+    font-size: 26px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    font-feature-settings: "tnum";
+  }
+  .stat-value.warn { color: var(--warn); }
+  .stat-value.accent { color: var(--accent); }
+
+  .stat-footnote {
+    font-family: var(--f-display);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--muted-2);
+    margin: 12px 0 36px;
+  }
+
+  @media (max-width: 640px) {
+    .stat-cell { flex: 1 1 50%; margin-bottom: 12px; }
+    .stat-cell:nth-child(3) { border-left: none; padding-left: 0; }
+  }
+
+  /* ---------- tabs ---------- */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 32px;
+    overflow-x: auto;
+  }
+  .tab {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 12px 14px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+  .tab .tab-num { color: var(--muted-2); margin-right: 6px; }
+  .tab:hover { color: var(--ink); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab.active .tab-num { color: var(--accent); }
+
+  /* ---------- panels ---------- */
+  .panel { display: none; }
+  .panel.active {
+    display: block;
+    animation: fadein 180ms ease;
+  }
+  @keyframes fadein {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .panel.active { animation: none; }
+  }
+
+  h2.section-title {
+    font-family: var(--f-display);
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 0 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--ink);
+  }
+
+  h3.sub-title {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ink);
+    margin: 28px 0 10px;
+  }
+
+  p {
+    font-size: 15px;
+    color: var(--ink-2);
+    margin: 0 0 16px;
+    max-width: 68ch;
+  }
+  p strong { color: var(--ink); font-weight: 600; }
+
+  ul.plain {
+    list-style: none;
+    margin: 0 0 20px;
+    padding: 0;
+  }
+  ul.plain li {
+    position: relative;
+    padding-left: 18px;
+    margin-bottom: 12px;
+    font-size: 15px;
+    color: var(--ink-2);
+    max-width: 68ch;
+  }
+  ul.plain li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  blockquote {
+    margin: 24px 0 28px;
+    padding-left: 20px;
+    border-left: 2px solid var(--accent);
+  }
+  blockquote p.quote-text {
+    font-family: var(--f-serif);
+    font-style: italic;
+    font-size: 21px;
+    line-height: 1.35;
+    color: var(--ink);
+    margin: 0 0 8px;
+    max-width: 56ch;
+  }
+  blockquote .quote-attr {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .callout {
+    font-size: 14px;
+    color: var(--ink-2);
+    background: var(--paper-2);
+    border-left: 2px solid var(--warn);
+    padding: 12px 16px;
+    margin: 8px 0 28px;
+  }
+  .callout strong { color: var(--warn); }
+
+  /* ---------- tables ---------- */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 8px;
+  }
+  thead th {
+    text-align: left;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 400;
+    padding: 0 12px 8px 0;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding-top: 10px;
+  }
+  tbody td {
+    font-size: 14px;
+    color: var(--ink-2);
+    padding: 14px 12px 14px 0;
+    border-bottom: 1px solid var(--rule-2);
+    vertical-align: top;
+    transition: background 150ms ease;
+  }
+  tbody tr:hover td { background: var(--paper-2); }
+  td.strong { color: var(--ink); font-weight: 600; }
+  .tag {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .tag.accent { color: var(--accent); }
+  .tag.warn { color: var(--warn); }
+
+  /* ---------- action checklist ---------- */
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+  .progress-track {
+    flex: 1;
+    height: 4px;
+    background: var(--rule-2);
+    position: relative;
+  }
+  .progress-fill {
+    position: absolute;
+    top: 0; left: 0; height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 220ms ease;
+  }
+  .progress-label {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .action-item {
+    display: flex;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--rule-2);
+  }
+  .action-item input[type="checkbox"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--ink);
+    margin-top: 2px;
+    flex-shrink: 0;
+    cursor: pointer;
+    position: relative;
+  }
+  .action-item input[type="checkbox"]:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .action-item input[type="checkbox"]:checked::after {
+    content: "";
+    position: absolute;
+    left: 5px; top: 1px;
+    width: 4px; height: 8px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .action-body { flex: 1; }
+  .action-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+    transition: color 150ms ease;
+  }
+  .action-meta {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .action-notes {
+    font-size: 13.5px;
+    color: var(--muted);
+    max-width: 60ch;
+  }
+  .action-item.done .action-title {
+    color: var(--muted-2);
+    text-decoration: line-through;
+  }
+  .action-item.done .action-meta { color: var(--muted-2); }
+
+  footer.doc-footer {
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+  }
+
+  @media print {
+    body { background: var(--paper); }
+    .page { box-shadow: none; }
+    .topbar .print-btn, .back-link { display: none; }
+    .tabs { display: none; }
+    .panel { display: block !important; margin-bottom: 40px; }
+    .panel.active { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="page-inner">
+
+    <div class="topbar">
+      <a class="back-link" href="../index.html">&larr; All clients</a>
+      <button class="print-btn" id="printBtn">Export / Print</button>
+    </div>
+
+    <p class="eyebrow" id="topEyebrow">devx labs · account planning · internal</p>
+    <h1 class="title" id="title"></h1>
+    <p class="meta-line" id="metaLine"></p>
+
+    <div class="stat-row" id="statRow"></div>
+    <p class="stat-footnote" id="statFootnote"></p>
+
+    <div class="tabs" id="tabs" role="tablist"></div>
+
+    <div id="panels"></div>
+
+    <footer class="doc-footer">devx doctrine v1.0 · account plan · confidential</footer>
+  </div>
+</div>
+
+<script>
+/* =========================================================================
+   CLIENT DATA
+   To reuse this page for another client, replace this object only.
+   Everything below it (render logic) stays the same.
+   ========================================================================= */
+const CLIENT = {
+  slug: "comet",
+  name: "Comet",
+  domain: "wearcomet.com",
+  legalName: "Grails Marketing Private Limited",
+  preparedDate: "September 2026",
+
+  stats: [
+    { label: "Current MRR", value: "₹3.80L", tone: "ink" },
+    { label: "Contract status", value: "Pending", tone: "warn" },
+    { label: "Headless deal", value: "~₹20L", tone: "accent" },
+    { label: "Primary contact", value: "Piyush S.", tone: "ink" }
+  ],
+  statFootnote: "Renewal targeted for end of September 2026, covering October and onward. Figures are internal billing data plus public company information — flag anything that needs correction.",
+
+  sections: [
+    {
+      id: "overview",
+      num: "01",
+      label: "Client Overview",
+      title: "Who Comet is",
+      html: `
+        <p>Comet (legally Grails Marketing Private Limited) is a homegrown D2C sneaker and lifestyle footwear brand, founded in 2022&ndash;2023 and headquartered in Bengaluru. The brand is built around unisex sneakers, slides, and shoelaces, sold directly through its own e-commerce platform, and positions itself as a bold, culture-forward alternative to conventional sneaker brands.</p>
+        <p><strong>Founders:</strong> Utkarsh Gupta (ex-Hotstar, chief of staff to the Hotstar CEO, Kellogg MBA) and Dishant Daryani.</p>
+        <p><strong>Funding:</strong> Seed from Nexus Venture Partners (2022), Series A from Elevation Capital and Nexus Venture Partners (May 2024). A funded, growth-stage brand rather than a bootstrapped shop &mdash; useful context for pricing conversations.</p>
+        <p><strong>Team size:</strong> publicly listed in the 0&ndash;50 range; not independently confirmed with Comet.</p>
+
+        <h3 class="sub-title">Current devx engagement</h3>
+        <table>
+          <thead><tr><th style="width:26%">Service</th><th style="width:48%">Detail</th><th style="width:26%">Monthly value</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="strong">Shopify Pro plan</td>
+              <td>Managed Shopify development &amp; support. ₹2L/mo through Aug 2026, stepped up to ₹3L/mo from Sept 2026.</td>
+              <td>₹3,00,000</td>
+            </tr>
+            <tr>
+              <td class="strong">RetailOS</td>
+              <td>7 stores billed at ₹11,500/store/month.</td>
+              <td>₹80,500</td>
+            </tr>
+            <tr>
+              <td class="strong">Total current MRR</td>
+              <td style="color:var(--muted)">~₹45.66L annualized at current run rate.</td>
+              <td class="strong">₹3,80,500</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="stat-footnote" style="margin-top:6px;">No annual contract is currently signed. Target is to get one signed by end of September 2026, covering October and subsequent months.</p>
+      `
+    },
+    {
+      id: "goals",
+      num: "02",
+      label: "Goals & Challenges",
+      title: "What Comet is trying to do",
+      html: `
+        <ul class="plain">
+          <li>Increase website speed and revamp the storefront by migrating to Shopify Headless. The deal is live but currently stuck on pricing and design finalization.</li>
+        </ul>
+        <h3 class="sub-title">Friction points to manage</h3>
+        <ul class="plain">
+          <li>A recent dip in development and project management quality from the devx side has dented trust and needs to be visibly repaired.</li>
+          <li>RetailOS quality has been a long-standing issue. Karan's in-person visit to Comet's office has largely stabilized it, but this is a repair in progress, not a closed issue &mdash; worth monitoring rather than assuming it's resolved.</li>
+          <li>Recurring month-over-month cost increases are Comet's biggest stated pain point, and the likely single largest obstacle to both the annual contract renewal and the headless upsell.</li>
+        </ul>
+        <blockquote>
+          <p class="quote-text">The resistance here isn't about scope or capability, it's about the price trend. Every proposal needs to answer the cost question before it answers the roadmap question.</p>
+          <p class="quote-attr">Account note &middot; Sept 2026</p>
+        </blockquote>
+      `
+    },
+    {
+      id: "stakeholders",
+      num: "03",
+      label: "Stakeholder Map",
+      title: "Who to work through",
+      html: `
+        <table>
+          <thead>
+            <tr>
+              <th style="width:22%">Name</th>
+              <th style="width:22%">Role</th>
+              <th style="width:38%">Relationship to devx</th>
+              <th style="width:18%">Influence</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="strong">Piyush Sharma</td>
+              <td>Product &amp; Tech Lead, Comet</td>
+              <td>Owns every commercial conversation with devx; takes items to the founders for approval.</td>
+              <td><span class="tag accent">Primary gatekeeper</span></td>
+            </tr>
+            <tr>
+              <td class="strong">Yashi</td>
+              <td>Comet team</td>
+              <td>Day-to-day POC for website and RetailOS delivery work.</td>
+              <td><span class="tag">Delivery relationship</span></td>
+            </tr>
+            <tr>
+              <td class="strong">Utkarsh Gupta / Dishant Daryani</td>
+              <td>Co-founders</td>
+              <td>No direct relationship with devx yet. Hold final approval on financial decisions.</td>
+              <td><span class="tag warn">Economic buyer, unreached</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="callout"><strong>Gap:</strong> devx has no direct line to the founders, who control budget sign-off. Worth asking Piyush to broker an introduction, especially ahead of the ~₹20L headless decision.</div>
+      `
+    },
+    {
+      id: "whitespace",
+      num: "04",
+      label: "Whitespace & Opportunities",
+      title: "Where the growth is",
+      html: `
+        <ul class="plain">
+          <li><strong>Shopify Headless migration</strong> &mdash; the largest near-term opportunity, roughly ₹20L, and winnable if devx gets the pricing right. Currently the deal is stalled on price and design, not on need.</li>
+          <li><strong>Dedicated maintenance developer</strong> &mdash; expected to follow naturally once headless is signed, adding recurring revenue on top of the project fee.</li>
+          <li><strong>Chatbot</strong> &mdash; Comet has appetite for it but won't pay for it as a standalone line item. It needs to be bundled into an AMC or maintenance plan rather than sold on its own.</li>
+          <li><strong>Data Warehousing</strong> &mdash; previously pitched with no traction. Comet doesn't have AWS credits, which makes a full-price DW offer a hard sell. Worth revisiting only with a lighter package, or once their AWS cost situation changes.</li>
+        </ul>
+      `
+    },
+    {
+      id: "actions",
+      num: "05",
+      label: "Action Plan & Timeline",
+      title: "Next moves",
+      isActionPanel: true,
+      actions: [
+        {
+          title: "Sign the annual Shopify + RetailOS contract",
+          timing: "End of Sept 2026",
+          notes: "Cost sensitivity is the main objection to work through before Oct billing."
+        },
+        {
+          title: "Close Shopify Headless, or fall back to an extended Shopify Dev AMC",
+          timing: "ASAP &mdash; pending pricing &amp; design sign-off",
+          notes: "Biggest revenue lever this quarter, ~₹20L."
+        },
+        {
+          title: "Move RetailOS to a 40-hr/month dedicated maintenance model",
+          timing: "Parallel with / after headless",
+          notes: "Structurally addresses the recurring quality complaints."
+        },
+        {
+          title: "Bundle chatbot into the AMC",
+          timing: "After AMC is signed",
+          notes: "Not viable as a standalone paid line item."
+        },
+        {
+          title: "Re-pitch Data Warehousing",
+          timing: "Revisit later",
+          notes: "Only with a lighter package, given no AWS credits on their side."
+        }
+      ]
+    }
+  ]
+};
+
+/* =========================================================================
+   RENDER LOGIC — generic, not specific to any one client
+   ========================================================================= */
+function toneClass(tone) {
+  if (tone === "warn") return "warn";
+  if (tone === "accent") return "accent";
+  return "";
+}
+
+function renderStatRow() {
+  const el = document.getElementById("statRow");
+  el.innerHTML = CLIENT.stats.map(s => `
+    <div class="stat-cell">
+      <p class="stat-label">${s.label}</p>
+      <p class="stat-value ${toneClass(s.tone)}">${s.value}</p>
+    </div>
+  `).join("");
+  document.getElementById("statFootnote").textContent = CLIENT.statFootnote;
+}
+
+function renderHeader() {
+  document.title = `Account Plan · ${CLIENT.name} · devx Labs`;
+  document.getElementById("title").innerHTML = `Account Plan &mdash; <em>${CLIENT.name}</em>`;
+  document.getElementById("metaLine").textContent =
+    `${CLIENT.domain}  ·  ${CLIENT.legalName}  ·  Prepared ${CLIENT.preparedDate}`;
+}
+
+function renderActionPanel(section) {
+  const rows = section.actions.map((a, i) => `
+    <label class="action-item" data-index="${i}">
+      <input type="checkbox" />
+      <div class="action-body">
+        <div class="action-title">${a.title}</div>
+        <div class="action-meta">${a.timing}</div>
+        <div class="action-notes">${a.notes}</div>
+      </div>
+    </label>
+  `).join("");
+
+  return `
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="progress-label" id="progressLabel">0 / ${section.actions.length} complete</span>
+    </div>
+    ${rows}
+  `;
+}
+
+function updateProgress() {
+  const items = document.querySelectorAll(".action-item");
+  const total = items.length;
+  let done = 0;
+  items.forEach(item => {
+    const checked = item.querySelector("input").checked;
+    item.classList.toggle("done", checked);
+    if (checked) done++;
+  });
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  const fill = document.getElementById("progressFill");
+  const label = document.getElementById("progressLabel");
+  if (fill) fill.style.width = pct + "%";
+  if (label) label.textContent = `${done} / ${total} complete`;
+}
+
+function renderTabsAndPanels() {
+  const tabsEl = document.getElementById("tabs");
+  const panelsEl = document.getElementById("panels");
+
+  tabsEl.innerHTML = CLIENT.sections.map((s, i) => `
+    <button class="tab${i === 0 ? " active" : ""}" role="tab" aria-selected="${i === 0}" data-target="${s.id}">
+      <span class="tab-num">${s.num}</span>${s.label}
+    </button>
+  `).join("");
+
+  panelsEl.innerHTML = CLIENT.sections.map((s, i) => `
+    <section class="panel${i === 0 ? " active" : ""}" id="panel-${s.id}" role="tabpanel">
+      <h2 class="section-title">${s.title}</h2>
+      ${s.isActionPanel ? renderActionPanel(s) : s.html}
+    </section>
+  `).join("");
+
+  tabsEl.querySelectorAll(".tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+      const target = tab.getAttribute("data-target");
+      tabsEl.querySelectorAll(".tab").forEach(t => {
+        t.classList.toggle("active", t === tab);
+        t.setAttribute("aria-selected", t === tab ? "true" : "false");
+      });
+      panelsEl.querySelectorAll(".panel").forEach(p => {
+        p.classList.toggle("active", p.id === `panel-${target}`);
+      });
+    });
+  });
+
+  panelsEl.querySelectorAll(".action-item input").forEach(cb => {
+    cb.addEventListener("change", updateProgress);
+  });
+  updateProgress();
+}
+
+document.getElementById("printBtn").addEventListener("click", () => window.print());
+
+renderHeader();
+renderStatRow();
+renderTabsAndPanels();
+</script>
+
+</body>
+</html>
